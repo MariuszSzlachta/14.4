@@ -25,36 +25,6 @@ var movies = [
   }
 ];
 
-//klasa movies list 
-
-var MoviesList = React.createClass({
-  propTypes: {
-    movies: React.PropTypes.array.isRequired
-  },
-
-  render: function(){
-    return React.createElement(Movie, {movies:movies})
-  }
-})
-
-
-// klasa movie czyli nasz pojedyczny film
-
-var Movie = React.createClass({
-
-  propTypes: {
-    movies: React.PropTypes.array.isRequired
-  },
-// nie wiem czy nie trzeba mapa użyć
-  render: movies.map(function(movie){
-    // return React.createElement('li', {key: this.props.movie.id},
-    // React.createElement(MovieTitle, {movies: movies}),
-    // React.createElement(MovieDesc, {movies:movies}),
-    // React.createElement(MovieImage, {movies:movies})
-    // );
-  }) 
-})
-
 // klasa movie desciption
 
 var MovieDesc = React.createClass({
@@ -63,7 +33,7 @@ var MovieDesc = React.createClass({
   },
 
   render: movies.map(function(movie){
-    return React.createElement('p', {key: this.props.movie.id}, this.props.movie.desc)
+    return React.createElement('p', {key: movie.id}, movie.desc)
   })
 });
 
@@ -75,7 +45,7 @@ var MovieTitle = React.createClass({
   },
 
   render: movies.map(function(movie){
-    return React.createElement('h2', {key: movie.id}, this.props.movie.title)
+    return React.createElement('h2', {key: movie.id}, movie.title)
   })
 });
 
@@ -87,11 +57,48 @@ var MovieImage = React.createClass({
   },
 
   render: movies.map(function(movie){
-    return React.createElement('img', {key: movie.id, src: this.props.movie.img})
+    return React.createElement('img', {key: movie.id, src: movie.img})
   })
-})
+});
 
+// klasa movie czyli nasz pojedyczny film
 
+var Movie = React.createClass({
+
+  propTypes: {
+    movies: React.PropTypes.object.isRequired
+  },
+// nie wiem czy nie trzeba mapa użyć
+  render: movies.map(function(movie){
+    return React.createElement('li', {key: movie.id},
+    React.createElement(MovieTitle, {key: movie.id}),
+    React.createElement(MovieDesc, {key: movie.id}),
+    React.createElement(MovieImage, {key: movie.id})
+    );
+  })
+});
+//klasa movies list 
+
+var MoviesList = React.createClass({
+
+  propTypes: {
+    movies: React.PropTypes.array.isRequired,
+  },
+
+  render: function(){
+    var moviesElements = this.props.movies.map(function(movie){
+      return React.createElement(Movie, {movie, key: movie.id});
+    });
+
+    return (
+      React.createElement('div', {},
+        React.createElement('h1', {}, 'Lista filmów'),
+        React.createElement('ul', {}, moviesElements)
+
+      )
+    )
+  }
+});
 
 var moviesList = React.createElement(MoviesList, {movies:movies});
 ReactDOM.render(moviesList, document.getElementById('app'));
