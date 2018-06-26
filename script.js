@@ -29,36 +29,36 @@ var movies = [
 
 var MovieDesc = React.createClass({
   propTypes: {
-    movie: React.PropTypes.object.isRequired
+    desc: React.PropTypes.string.isRequired
   },
 
-  render: movies.map(function(movie){
-    return React.createElement('p', {key: movie.id}, movie.desc)
-  })
+  render: function(){
+    return React.createElement('p', {}, this.props.desc)
+  }
 });
 
 // klasa movies title
 
 var MovieTitle = React.createClass({
   propTypes: {
-    movies: React.PropTypes.object.isRequired
+    title: React.PropTypes.string.isRequired
   },
 
-  render: movies.map(function(movie){
-    return React.createElement('h2', {key: movie.id}, movie.title)
-  })
+  render: function(){
+    return React.createElement('h2', {}, this.props.title)
+  }
 });
 
 // klasa movie image
 
 var MovieImage = React.createClass({
   propTypes: {
-    movies: React.PropTypes.object.isRequired
+    img: React.PropTypes.string.isRequired
   },
 
-  render: movies.map(function(movie){
-    return React.createElement('img', {key: movie.id, src: movie.img})
-  })
+  render: function(){
+    return React.createElement('img', {src: this.props.img})
+  }
 });
 
 // klasa movie czyli nasz pojedyczny film
@@ -66,16 +66,16 @@ var MovieImage = React.createClass({
 var Movie = React.createClass({
 
   propTypes: {
-    movies: React.PropTypes.object.isRequired
+    movie: React.PropTypes.object.isRequired
   },
-// nie wiem czy nie trzeba mapa użyć
-  render: movies.map(function(movie){
-    return React.createElement('li', {key: movie.id},
-    React.createElement(MovieTitle, {key: movie.id}),
-    React.createElement(MovieDesc, {key: movie.id}),
-    React.createElement(MovieImage, {key: movie.id})
+
+  render: function(){
+    return React.createElement('li', {key: this.props.movie.id},
+    React.createElement(MovieTitle, {title: this.props.movie.title}),
+    React.createElement(MovieDesc, {desc: this.props.movie.desc}),
+    React.createElement(MovieImage, {img: this.props.movie.img})
     );
-  })
+  }
 });
 //klasa movies list 
 
@@ -86,6 +86,7 @@ var MoviesList = React.createClass({
   },
 
   render: function(){
+    console.log(this.props);
     var moviesElements = this.props.movies.map(function(movie){
       return React.createElement(Movie, {movie, key: movie.id});
     });
